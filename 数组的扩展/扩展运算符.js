@@ -32,3 +32,16 @@
 // obj3.age = 1000;
 // console.log(obj3);
 // console.log(obj4.age);
+
+
+// const [first, ...rest] = [1, 2, 3, 4, 5];
+// const [first, ...rest, c] = [1, 2, 3, 4, 5];
+// console.log({ first, rest })//error rest must be last element
+
+
+/**
+ * 类数组转换成数组
+ * 1. Array.from(arr)
+ * 2. [...arr]
+ * 3. Array.prototype.slice.call(arr)
+ */
