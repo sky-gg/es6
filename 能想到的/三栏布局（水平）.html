@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>中间自适应，两边固定</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box1,
+    .box4,
+    .box3,
+    .box2 {
+      width: 400px;
+      height: 200px;
+      margin: 10px;
+    }
+
+    .left,
+    .right,
+    .center {
+      height: 100%;
+    }
+
+    .left {
+      width: 100px;
+      background: #ccc;
+    }
+
+    .right {
+      width: 100px;
+      background: #cce;
+    }
+
+    .center {
+      background: rgb(102, 96, 96);
+    }
+
+
+    /* 第一种方式 */
+    .box1 .left {
+      float: left;
+    }
+
+    .box1 .center {
+      margin-left: 100px;
+      margin-right: 100px
+    }
+
+    .box1 .right {
+      float: right;
+    }
+
+    .box1::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    /* 第二种方式 */
+    .box2 {
+      position: relative;
+    }
+
+    .box2 .left {
+      position: absolute;
+      left: 0;
+    }
+
+    .box2 .center {
+      position: absolute;
+      left: 100px;
+      right: 100px;
+    }
+
+    .box2 .right {
+      position: absolute;
+      right: 0;
+    }
+
+    /* 第三种方式 */
+    .box3 {
+      display: grid;
+      grid-template-rows: 200px;
+      grid-template-columns: 100px auto 100px;
+    }
+
+    /* 第四种方式 */
+    .box4 {
+      display: flex;
+    }
+
+    .box4 .center {
+      flex: 1
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box1">
+    <div class="left">Lorem ipsum dolor sit amet consectetur.</div>
+    <div class="right">Lorem ipsum dolor sit amet consectetur.</div>
+    <div class="center">Lorem ipsum dolor sit amet consectetur.</div>
+  </div>
+  <div class="box2">
+    <div class="left">Lorem ipsum dolor sit amet consectetur.</div>
+    <div class="center">Lorem ipsum dolor sit amet consectetur.</div>
+    <div class="right">Lorem ipsum dolor sit amet consectetur.</div>
+  </div>
+  <div class="box3">
+    <div class="left">Lorem ipsum dolor sit amet consectetur.</div>
+    <div class="center">Lorem ipsum dolor sit amet consectetur.</div>
+    <div class="right">Lorem ipsum dolor sit amet consectetur.</div>
+  </div>
+  <div class="box4">
+    <div class="left">Lorem ipsum dolor sit amet consectetur.</div>
+    <div class="center">Lorem ipsum dolor sit amet consectetur.</div>
+    <div class="right">Lorem ipsum dolor sit amet consectetur.</div>
+  </div>
+</body>
+
+</html>
