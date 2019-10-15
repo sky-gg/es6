@@ -252,7 +252,6 @@ console.log(child1 instanceof Parent); // true
 ## 浏览器
 
 ### 状态码
-* 300
 * 301 被请求的资源已永久移动到新位置
 * 302 请求的资源临时从不同的 URI响应请求。
 * 303 对应当前请求的响应可以在另一个 URL 上被找到，而且客户端应当采用 GET 的方式访问那个资源
@@ -274,11 +273,11 @@ console.log(child1 instanceof Parent); // true
 * session 存储于服务器，占用服务器资源，安全
 
 ### event loop
-![栈堆队列.png](./栈堆队列.png)
+![栈堆队列.png](./img/栈堆队列.png)
 * 堆（先进后出）
-![堆.png](./堆.png)
+![堆.png](./img/堆.png)
 * 队列(先进先出)
-![队列.png](./队列.png)
+![队列.png](./img/队列.png)
 
 * 宏任务
 * 微任务
@@ -320,18 +319,96 @@ console.log(child1 instanceof Parent); // true
 
 ### 生命周期
 * init
-* beforeCreate
-* created
-* beforeMount
-* mounted
-* beforeUpdate
-* updated
-* beforeDistory
-* distoryed
+* beforeCreate 在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用
+* created 数据观测 (data observer)，属性和方法的运算，watch/event 事件回调。然而，挂载阶段还没开始，$el 属性目前不可见。
+* beforeMount 在挂载开始之前被调用：相关的 render 函数首次被调用 该钩子在服务器端渲染期间不被调用
+* mounted el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子。如果 root 实例挂载了一个文档内元素，当 mounted 被调用时 vm.$el 也在文档内。该钩子在服务器端渲染期间不被调用
+* beforeUpdate 数据更新时调用，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器 该钩子在服务器端渲染期间不被调用，因为只有初次渲染会在服务端进行。
+* updated 由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。该钩子在服务器端渲染期间不被调用。
+* beforeDistory 实例销毁之前调用。在这一步，实例仍然完全可用。该钩子在服务器端渲染期间不被调用。
+* distoryed Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。 该钩子在服务器端渲染期间不被调用。
 
-### 自定义指令
+### 
+```js
+// 注册一个全局自定义指令 `v-focus`
+Vue.directive('focus', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function (el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
+// 局部指令
+directives: {
+  focus: {
+    // 指令的定义
+    inserted: function (el) {
+      el.focus()
+    }
+  }
+}
+```
+```html
+<!-- 使用 -->
+<input v-focus/>
+```
+* 钩子函数
+  1. bind：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+  2. inserted：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+  3. update：所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。指令的值可能发生了改变，也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新
+  4. componentUpdated：指令所在组件的 VNode 及其子 VNode 全部更新后调用。
+  5. unbind：只调用一次，指令与元素解绑时调用。
+* 钩子函数的参数
+  1. el：指令所绑定的元素，可以用来直接操作dom
+  2. binding：一个对象，包含以下属性
+    * name：指令名，不包括前缀
+    * value：指令绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。
+    * oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
+    * expression：字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"。
+    * arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"
+    * modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }
+  3. vnode：Vue 编译生成的虚拟节点
+  4. oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
+   ```html
+   <div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
+   ```
+   ```js
+    Vue.directive('demo', {
+      bind: function (el, binding, vnode) {
+        var s = JSON.stringify
+        el.innerHTML =
+          'name: '       + s(binding.name) + '<br>' +
+          'value: '      + s(binding.value) + '<br>' +
+          'expression: ' + s(binding.expression) + '<br>' +
+          'argument: '   + s(binding.arg) + '<br>' +
+          'modifiers: '  + s(binding.modifiers) + '<br>' +
+          'vnode keys: ' + Object.keys(vnode).join(', ')
+      }
+    })
+
+    new Vue({
+      el: '#hook-arguments-example',
+      data: {
+        message: 'hello!'
+      }
+    })
+    /*
+    * name: "demo"
+    * value: "hello!"
+    * expression: "message"
+    * argument: "foo"
+    * modifiers: {"a":true,"b":true}
+    * vnode keys: tag, data, children, text, elm, ns, context, fnContext, fnOptions, fnScopeId, key, componentOptions,     * componentInstance, parent, raw, isStatic, isRootInsert, isComment, isCloned, isOnce, asyncFactory, asyncMeta, isAsyncPlaceholder
+    */
+    ```
+* 动态指令参数
+  在 `v-mydirective:[argument]="value"` 中，`argument` 参数可以根据组件实例数据进行更新
+
 
 ### keep-alive
+* 钩子函数
+  1. activated：keep-alive 组件激活时调用
+  2. deactivated：keep-alive 组件停用时调用
 
 ### Vue.nextTick( [callback, context] )
 * 在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM
@@ -341,7 +418,11 @@ console.log(child1 instanceof Parent); // true
 
 ## vue-router
 
-### $route、$router的区别
+### $router、$route的区别
+* router 全局路由
+* 当前路由 path、parmas、query、fullPath、、
+  1. parmas /user/:id => /user/34  [name] 不传刷新会消失
+  2. query /user/ => /user/id=34 [path] 
 
 ### 导航守卫
 1. 全局前置守卫
@@ -351,7 +432,7 @@ console.log(child1 instanceof Parent); // true
 5. 组件内的守卫
 
 ### 路由懒加载
-
+`()=>{import('@src/pages/Home')}`
 ### 滚动行为（scrollBehavior）
 
 ### params、query
@@ -378,7 +459,7 @@ router.push({ path: 'register', query: { plan: 'private' }})
 ## vuex
 
 ### 原理
-![vuex](./vuex.png)
+![vuex](./img/vuex.png)
 
 ### 核心概念
 1. state
@@ -390,3 +471,5 @@ router.push({ path: 'register', query: { plan: 'private' }})
 4. mutation
   * 更新state的唯一方式 同步 
 6. module
+
+## webpack
