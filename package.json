@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "从基础学习es6",
   "main": "index.js",
-  "private": true,
   "scripts": {
     "dev": "webpack-dev-server --config config/webpack.dev.js",
     "build": "webpack --config config/webpack.prod.js"
@@ -12,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/sky-gg/es6.git"
   },
-  "keywords": [],
+  "keywords": ["javaScript", "es6", "前端面试题", "vue", "webpack"],
   "author": "",
   "license": "ISC",
   "bugs": {
