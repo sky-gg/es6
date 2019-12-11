@@ -21,7 +21,11 @@
 
 function f() {
   console.log('aaa');
+  // return true
 }
 
-let [x = f()] = [undefined];
+let [x = f()] = [];
+// let [x = f()] = [23];
+// let [x = f()] = [null];
+// let [x = f()] = [undefined];
 console.log('x: ', x);
