@@ -89,11 +89,20 @@ window.onresize = function () {
 * from
 * flat(Infinity)
 
+### for...in.../for...of...
+* for...in 遍历key，所有的可枚举属性，多用于遍历对象
+* for...of 遍历value，多用于遍历数组(Iterator接口)
+
+
 ### 类数组转换
 * Array.from(arr)
 * Array.prototype.slice.call(arr)
+
+
 ### 箭头函数this指向
 * 定义时的对象
+
+
 ### let const var 区别
 #### var
 * 全局变量
