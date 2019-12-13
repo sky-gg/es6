@@ -117,6 +117,7 @@ window.onresize = function () {
 * 不会变量提升
 * 不允许重复声明
 * 不允许只定义不赋值
+
 ### Promise
 * 异步编程的一种解决方案
 ```js
@@ -151,6 +152,7 @@ const promise = new Promise(function(resolve, reject) {
 * 特点：
   1. 常驻内存
   2. 容易引起内存泄漏
+
 ### 继承
 ```js
 // 1.原型链继承
@@ -242,6 +244,7 @@ console.log(child1 instanceof Parent); // true
 * 目标
 * 事件冒泡 （阻止事件冒泡 `e.stopPropagation `）
 * target(事件的真正发出者，即触发事件的节点)、currentTarget(始终是监听事件者)
+* 事件委托
 
 ### 栈、堆
 * 栈：栈内存主要用于存储各种基本类型的变量，以及指针
@@ -269,8 +272,8 @@ console.log(child1 instanceof Parent); // true
 ### cookie localStorage sessionStorage
 
 ### cookie session
-* cookie 存储于浏览器，存储量小，不安全
-* session 存储于服务器，占用服务器资源，安全
+* cookie 存储于浏览器，存储量小，只能存储字符串，不安全
+* session 存储于服务器，占用服务器资源，支持各种类型对象，安全
 
 ### event loop
 ![栈堆队列.png](./img/栈堆队列.png)
@@ -279,34 +282,40 @@ console.log(child1 instanceof Parent); // true
 * 队列(先进先出)
 ![队列.png](./img/队列.png)
 
-* 宏任务
-* 微任务
-* 
-### 回流重绘
-> 浏览器使用流式布局模型 (Flow Based Layout)。
-> 浏览器会把HTML解析成DOM，把CSS解析成CSSOM，DOM和CSSOM合并就产生了Render Tree。
-> 有了RenderTree，我们就知道了所有节点的样式，然后计算他们在页面上的大小和位置，最后把节点绘制到页面上。
+* 宏任务（setTimeout/setInterval）
+* 微任务（Promise/process.nextTick）
 
+
+### 回流重绘
 1. 回流(Reflow)
   * 当Render Tree中部分或全部元素的尺寸、结构、或某些属性发生改变时，浏览器重新渲染部分或全部文档的过程称为回流。
 
 2. 重绘(Repaint)
   * 当页面中元素样式的改变并不影响它在文档流中的位置时（例如：color、background-color、visibility等），浏览器会将新样式赋予给元素并重新绘制它，这个过程称为重绘。
 
-3. 性能影响：回流比重绘的代价要更高。
+3. 性能影响：回流比重绘的代价要更高。回流必将引起重绘，重绘不一定会引起回流。
 
 ### 浏览器渲染机制
+> 浏览器使用流式布局模型 (Flow Based Layout)。
+> 浏览器会把HTML解析成DOM，把CSS解析成CSSOM，DOM和CSSOM合并就产生了Render Tree。
+> 有了RenderTree，我们就知道了所有节点的样式，然后计算他们在页面上的大小和位置，最后把节点绘制到页面上。
+
 
 ### 同步异步
+1. js单线程，只能一个处理完成，再去处理另一个。
+2. 为了优化用户体验，需要加载时间的内容，例如图片、媒体文件等可以进行异步加载。
 
-### 服务器代理
-* Access-Control-Allow-Origin: *
 
+### 跨域
+1. 服务器代理
+  * Access-Control-Allow-Origin: *
+2. jsonp
 
 ## vue
 
 ### 双向绑定原理
 * ‘数据劫持’ + 订阅发布模式实现
+* Object.defineProperty 与 proxy 的区别
 ### v-model实现
 
 ### 父子组件传值
