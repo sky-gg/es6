@@ -1,27 +1,37 @@
-
 /**
  * 代理 顾名思义对操作进行拦截，
+ * var proxy = new Proxy(target, handler);
+ * target: 所要拦截的目标对象
+ * handler: 用来定制拦截行为
  */
-let fuck = [26377, 20154, 22312, 35835, 21462, 26085, 24535]
-let obj = new Proxy({}, {
-  get: function(target, key, receiver) { //target：要代理的对象，key：属性名，receiver：实例本身 obj
-    console.log('receiver: ', receiver === obj);
-    // console.log(cipherText(fuck) + key)
-    return Reflect.get(target, key, receiver)
+let obj = {
+  id: 1
+}
+let proxyObj = new Proxy(obj, {
+  get(target, propKey, receiver) {
+    // console.log("读取", target === obj, propKey, receiver === proxyObj)
+    return target[propKey]
   },
-  set: function(target, key, value, receiver) {
-    // console.log(cipherText(fuck) + key)
-    return Reflect.set(target, key, value, receiver)
+  set(target, propKey, value, receiver) {
+    if (!(propKey in target)) {
+      console.log('新增')
+    } else if (target[propKey] !== value) {
+      console.log('修改')
+    }
+    target[propKey] = value
   }
 })
-obj.a = '1'
-++obj.a
-
+proxyObj.ida
+console.log(proxyObj.id)
+proxyObj.id = 4
+proxyObj.id = 4
+proxyObj.ida = 4
+// console.log(obj)
 /** Proxy 支持的拦截操作一览，一共 13 种。
  *
- * get(target, propKey, receiver) ：拦截对象属性的读取，比如proxy.foo和proxy['foo']。
+ * get(target【要拦截的对象】, propKey【对象的属性】, [receiver]【拦截后的对象】) ：拦截对象属性的读取，比如proxy.foo和proxy['foo']。
  *
- * set(target, propKey, value, receiver) ：拦截对象属性的设置，比如proxy.foo = v或proxy['foo'] = v，返回一个布尔值。
+ * set(target, propKey, value, [receiver]) ：拦截对象属性的设置
  *
  * has(target, propKey) ：拦截propKey in proxy的操作，返回一个布尔值。
  *

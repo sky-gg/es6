@@ -1,12 +1,20 @@
 /** WeakSet
  * 成员只能是对象
- * 
+ * 弱引用有助于防止内存泄漏
  */
 // const arr = new WeakSet()
 // arr.set({})
 // arr.set({})
 // arr.set({})
 // console.log(arr)
+let arr = [1, 3, 4]
+let crr = [
+  [1, 2],
+  [3, 4]
+]
+// let ws = new WeakSet(arr) //error
+let ws = new WeakSet(crr)
+console.log('ws: ', ws);
 
 let brr = new WeakSet()
 

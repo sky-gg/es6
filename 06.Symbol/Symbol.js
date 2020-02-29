@@ -1,8 +1,7 @@
 // 新的基本数据类型 Symbol 
 // let s = Symbol('你好')
-// // let s = Symbol(`你好`)
 // console.log(typeof s)
-// console.log(s.description, 5)
+// console.log(s.description)
 
 // let mySymbol = Symbol();
 
@@ -37,3 +36,7 @@ const objectSymbols = Object.getOwnPropertySymbols(obj);
 
 console.log('objectSymbols: ', objectSymbols);
 // [Symbol(a), Symbol(b)]
+
+/**
+ * Symbol 独一无二，可带参数，可转布尔值，不可转数字，不能与其他数据类型进行运算
+ */

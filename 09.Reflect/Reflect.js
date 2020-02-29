@@ -4,6 +4,25 @@
  *  让Object操作都变成函数行为
  *  Reflect对象的方法与Proxy对象的方法一一对应，只要是Proxy对象的方法，就能在Reflect对象上找到对应的方法。
  */
+let obj = {
+  "id": 1
+}
+let loggedObj = new Proxy(obj, {
+  get: function(target, name) {
+    console.log('get', target, name);
+    return Reflect.get(target, name);
+  },
+  deleteProperty: function(target, name) {
+    console.log('delete' + name);
+    return Reflect.deleteProperty(target, name);
+  },
+  has: function(target, name) {
+    console.log('has' + name);
+    return Reflect.has(target, name);
+  }
+});
+loggedObj.has(obj, "id")
+console.log("id" in obj)
 /*
 Reflect对象一共有 13 个静态方法。
 
