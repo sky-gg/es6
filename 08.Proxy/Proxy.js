@@ -41,7 +41,7 @@ proxyObj.ida = 4
  *
  * getOwnPropertyDescriptor(target, propKey) ：拦截Object.getOwnPropertyDescriptor(proxy, propKey) ，返回属性的描述对象。
  *
- * defineProperty(target, propKey, propDesc) ：拦截Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs) ，返回一个布尔值。
+ * defineProperty(target, propKey, propDesc) ：拦截Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDesc) ，返回一个布尔值。
  *
  * preventExtensions(target) ：拦截Object.preventExtensions(proxy) ，返回一个布尔值。
  *
